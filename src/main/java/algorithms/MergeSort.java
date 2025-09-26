@@ -5,42 +5,37 @@ import java.util.Arrays;
 public class MergeSort {
 
     public static void sort(int[] array) {
-        if (array == null || array.length <= 1) {
-            return;
-        }
-        mergeSort(array, 0, array.length - 1);
+        int[] temp = new int[array.length]; //one buffer for the entire process
+        mergeSort(array, temp, 0,array.length - 1);
     }
 
-    private static void mergeSort(int[] array, int left, int right) {
+    private static void mergeSort(int[] array, int[] temp, int left, int right) {
         if (left >= right) return;
 
         int mid = left + (right - left) / 2;
 
-        mergeSort(array, left, mid);
-        mergeSort(array, mid + 1, right);
-
-        merge(array, left, mid, right);
+        mergeSort(array, temp, left, mid);
+        mergeSort(array, temp,mid + 1, right);
+        merge(array, temp, left, mid, right);
     }
 
-    private static void merge(int[] array, int left, int mid, int right) {
-        
-        int[] leftArr = Arrays.copyOfRange(array, left, mid + 1);
-        int[] rightArr = Arrays.copyOfRange(array, mid + 1, right + 1);
+    private static void merge(int[] array, int[] temp, int left, int mid, int right) {
+        for (int i = left; i <= right; i++) { //copy the current diapason to the buffer
+            temp[i] = array[i];
+        }
+        int i = left;
+        int j = mid + 1;
+        int k = left;
 
-        int i = 0, j = 0, k = left;
-
-        while (i < leftArr.length && j < rightArr.length) {
-            if (leftArr[i] <= rightArr[j]) {
-                array[k++] = leftArr[i++];
-            } else {
-                array[k++] = rightArr[j++];
+        while (i <= mid && j <= right) {
+            if (temp[i] <= temp[j]) {
+                array[k++] = temp[i++];
+            }else{
+                array[k++] = temp[j++];
             }
         }
-        while (i < leftArr.length) {
-            array[k++] = leftArr[i++];
-        }
-        while (j < rightArr.length) {
-            array[k++] = rightArr[j++];
+        while (i <= mid) {
+            array[k++] = temp[i++];
         }
     }
 }
