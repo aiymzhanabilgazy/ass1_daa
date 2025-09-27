@@ -8,39 +8,45 @@ import java.util.Random;
 public class MergeSortTest {
 
     @Test
-    void testWithDuplicates() {
-        int[] array = {5, 3, 2, 3, 8, 1, 1};
-        int[] expected = {1, 1, 2, 3, 3, 5, 8};
-        MergeSort.sort(array);
-        assertArrayEquals(expected, array);
-    }
-    @Test
-    void testWithEmptyArray() {
+    void testEmptyArray() {
         int[] array = {};
-        int[] expected = {};
+        MergeSort.sort(array);
+        assertArrayEquals(new int[]{}, array);
+    }
+    @Test
+    void testSingleElementArray() {
+        int[] array = {1};
+        MergeSort.sort(array);
+        assertArrayEquals(new int[]{1}, array);
+    }
+    @Test
+    void testAlreadySortedArray() {
+        int[] array = {1, 2, 3, 4, 5};
+        int[] expected = {1, 2, 3, 4, 5};
         MergeSort.sort(array);
         assertArrayEquals(expected, array);
     }
     @Test
-    void testSingleElement() {
-        int[] array = {3};
-        int[] expected = {3};
+    void testReverseSortedArray() {
+        int[] array = {5, 4, 3, 2, 1};
+        int[] expected = {1, 2, 3, 4, 5};
         MergeSort.sort(array);
         assertArrayEquals(expected, array);
     }
     @Test
-    void testSmallArraySortedCorrectly() {
-        int[] array = {7, 3, 5, 1, 2};
-        int[] expected = {1, 2, 3, 5, 7};
+    void testRandomArray() {
+        int[] array = {3, 7, 1, 9, 2};
+        int[] expected = {1, 2, 3, 7, 9};
         MergeSort.sort(array);
         assertArrayEquals(expected, array);
     }
     @Test
-    void testSmallArrayWithDuplicates() {
-        int[] array = {4, 2, 2, 1, 3};
-        int[] expected = {1, 2, 2, 3, 4};
+    void testWithDuplicates() {
+        int[] array = {5, 1, 3, 3, 2, 5, 1};
+        int[] expected = {1, 1, 2, 3, 3, 5, 5};
         MergeSort.sort(array);
         assertArrayEquals(expected, array);
     }
+
 }
 
