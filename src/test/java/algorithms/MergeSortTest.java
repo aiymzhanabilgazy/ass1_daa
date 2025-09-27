@@ -28,5 +28,19 @@ public class MergeSortTest {
         MergeSort.sort(array);
         assertArrayEquals(expected, array);
     }
+    @Test
+    void testSmallArraySortedCorrectly() {
+        int[] array = {7, 3, 5, 1, 2};
+        int[] expected = {1, 2, 3, 5, 7};
+        MergeSort.sort(array);
+        assertArrayEquals(expected, array);
+    }
+    @Test
+    void testSmallArrayWithDuplicates() {
+        int[] array = {4, 2, 2, 1, 3};
+        int[] expected = {1, 2, 2, 3, 4};
+        MergeSort.sort(array);
+        assertArrayEquals(expected, array);
+    }
 }
 

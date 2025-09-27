@@ -3,6 +3,7 @@ package algorithms;
 import java.util.Arrays;
 
 public class MergeSort {
+    private static final int CUTOFF = 10;
 
     public static void sort(int[] array) {
         int[] temp = new int[array.length]; //one buffer for the entire process
@@ -11,6 +12,11 @@ public class MergeSort {
 
     private static void mergeSort(int[] array, int[] temp, int left, int right) {
         if (left >= right) return;
+
+        if(right - left <= CUTOFF) {
+            insertionSort(array, left, right);
+            return;
+        }
 
         int mid = left + (right - left) / 2;
 
@@ -36,6 +42,18 @@ public class MergeSort {
         }
         while (i <= mid) {
             array[k++] = temp[i++];
+        }
+    }
+
+    private static void insertionSort(int[] array, int left, int right) {
+        for (int i = left + 1; i <= right; i++) {
+            int key = array[i];
+            int j = i - 1;
+            while (j >= left && array[j] > key) {
+                array[j + 1] = array[j];
+                j--;
+            }
+            array[j + 1] = key;
         }
     }
 }
