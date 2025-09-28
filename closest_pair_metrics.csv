@@ -1,0 +1,10 @@
+algorithm,n,trial,time_ns,comparisons,array_writes,allocations,maxRecDepth
+ClosestPair,100,0,1917417,277,0,0,7
+ClosestPair,100,1,218792,283,0,0,7
+ClosestPair,100,2,186375,281,0,0,7
+ClosestPair,1000,0,1794416,3472,0,0,10
+ClosestPair,1000,1,2287709,3452,0,0,10
+ClosestPair,1000,2,832250,3455,0,0,10
+ClosestPair,5000,0,5182375,13006,0,0,13
+ClosestPair,5000,1,3876417,13017,0,0,13
+ClosestPair,5000,2,3537167,13048,0,0,13
