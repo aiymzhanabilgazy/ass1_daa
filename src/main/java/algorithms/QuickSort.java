@@ -26,21 +26,25 @@ public class QuickSort {
     }
 
     private static void quicksort(int[] array, int left, int right, SortMetrics m) {
-        if (left >= right) return;
+        while (left < right) {
+            if (m != null) m.enterRecursion();
+            try {
+                int pivotIndex = left + rand.nextInt(right - left + 1); //randomized pivot
+                int pivotValue = array[pivotIndex];
+                swap(array, pivotIndex, right, m);
 
-        if (m != null) m.enterRecursion();
-        try {
+                int partitionIndex = partition(array, left, right, pivotValue, m);
 
-            int pivotIndex = left + rand.nextInt(right - left + 1); //randomized pivot
-            int pivotValue = array[pivotIndex];
-            swap(array, pivotIndex, right, m);
-
-            int partitionIndex = partition(array, left, right, pivotValue, m);
-
-            quicksort(array, left, partitionIndex - 1, m);
-            quicksort(array, partitionIndex + 1, right, m);
-        } finally {
-            if (m != null) m.exitRecursion();
+                if (partitionIndex - left < right - partitionIndex) { //recurse on the smaller partition
+                    quicksort(array, left, partitionIndex - 1, m);
+                    left = partitionIndex + 1; //iterate over the larger one
+                } else {
+                    quicksort(array, partitionIndex + 1, right, m);
+                    right = partitionIndex - 1; //iterate over the larger one
+                }
+            } finally {
+                if (m != null) m.exitRecursion();
+            }
         }
     }
 

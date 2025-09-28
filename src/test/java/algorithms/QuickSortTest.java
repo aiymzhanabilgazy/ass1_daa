@@ -61,4 +61,22 @@ public class QuickSortTest {
         QuickSort.sort(array);
         assertArrayEquals(expected, array);
     }
+    @Test
+    void testRecursionDepthBound(){
+        int n = 10000;
+        int[] array = new int[n];
+        Random rand = new Random();
+        for (int i = 0; i < n; i++) {
+            array[i] = rand.nextInt(100000);
+        }
+        metrics.SortMetrics m = new metrics.SortMetrics();
+        int[] expected = array.clone();
+        java.util.Arrays.sort(expected);
+        QuickSort.sort(array, m);
+        assertArrayEquals(expected, array);
+
+        assertTrue(m.getMaxDepth() <= 2 * (int)(Math.log(n) / Math.log(2)) + 5);
+
+
+    }
 }
