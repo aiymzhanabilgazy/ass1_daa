@@ -1,0 +1,4 @@
+algorithm,n,trial,time_ns,comparisons,array_writes,allocations,maxRecDepth
+mergesort,1000,0,859459,9172,17369,1,8
+mergesort,1000,1,224875,9177,17376,1,8
+mergesort,1000,2,168125,9142,17320,1,8
