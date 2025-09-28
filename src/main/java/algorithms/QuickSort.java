@@ -1,72 +1,71 @@
 package algorithms;
 
-import java.util.Random;
 import metrics.SortMetrics;
 
+import java.util.Random;
+
 public class QuickSort {
-    private static final Random rand = new Random();
 
     public static void sort(int[] array) {
-        sort(array, null);
+        sort(array, new SortMetrics());
     }
 
     public static void sort(int[] array, SortMetrics m) {
-        if (array == null || array.length <= 1) return;
-
-        if (m != null) {
-            m.reset();
-            m.startTimer();
-        }
-
+        if (!guardArray(array)) return;
+        shuffle(array, new Random(), m);
         quicksort(array, 0, array.length - 1, m);
-
-        if (m != null) {
-            m.stopTimer();
-        }
     }
 
-    private static void quicksort(int[] array, int left, int right, SortMetrics m) {
-        while (left < right) {
-            if (m != null) m.enterRecursion();
-            try {
-                int pivotIndex = left + rand.nextInt(right - left + 1); //randomized pivot
-                int pivotValue = array[pivotIndex];
-                swap(array, pivotIndex, right, m);
+    private static void quicksort(int[] a, int lo, int hi, SortMetrics m) {
+        while (lo < hi) {
+            m.enterRecursion();
 
-                int partitionIndex = partition(array, left, right, pivotValue, m);
+            int p = partition(a, lo, hi, m);
 
-                if (partitionIndex - left < right - partitionIndex) { //recurse on the smaller partition
-                    quicksort(array, left, partitionIndex - 1, m);
-                    left = partitionIndex + 1; //iterate over the larger one
-                } else {
-                    quicksort(array, partitionIndex + 1, right, m);
-                    right = partitionIndex - 1; //iterate over the larger one
-                }
-            } finally {
-                if (m != null) m.exitRecursion();
+            // Recurse into smaller partition first
+            if (p - lo < hi - p) {
+                quicksort(a, lo, p - 1, m);
+                lo = p + 1; // tail recursion on larger side
+            } else {
+                quicksort(a, p + 1, hi, m);
+                hi = p - 1;
             }
+
+            m.exitRecursion();
         }
     }
+    private static int partition(int[] a, int lo, int hi, SortMetrics m) {
+        int pivot = a[hi];
+        int i = lo - 1;
 
-    private static int partition(int[] array, int left, int right, int pivotValue, SortMetrics m) {
-        int storeIndex = left;
-        for (int i = left; i < right; i++) {
+        for (int j = lo; j < hi; j++) {
             if (m != null) m.incrementComparisons();
-            if (array[i] < pivotValue) {
-                swap(array, i, storeIndex, m);
-                storeIndex++;
+            if (a[j] <= pivot) {
+                i++;
+                swap(a, i, j, m);
             }
         }
-        swap(array, storeIndex, right, m);
-        return storeIndex;
+        swap(a, i + 1, hi, m);
+        return i + 1;
     }
 
-    private static void swap(int[] array, int i, int j, SortMetrics m) {
-        if (i != j) {
-            int temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-            if (m != null) m.incrementArrayWrites();
+
+    private static void swap(int[] a, int i, int j, SortMetrics m) {
+        if (i == j) return;
+        int tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+        if (m != null) m.incrementArrayWrites();
+    }
+
+    private static void shuffle(int[] a, Random rand, SortMetrics m) {
+        for (int i = a.length - 1; i > 0; i--) {
+            int j = rand.nextInt(i + 1);
+            swap(a, i, j, m);
         }
+    }
+
+    private static boolean guardArray(int[] a) {
+        return a != null && a.length > 1;
     }
 }
